@@ -1,0 +1,484 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B38FC8F318289758008285BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC8F218289758008285BE /* Foundation.framework */; };
+		B38FC8F518289758008285BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC8F418289758008285BE /* CoreGraphics.framework */; };
+		B38FC8F718289758008285BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC8F618289758008285BE /* UIKit.framework */; };
+		B38FC8FD18289758008285BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B38FC8FB18289758008285BE /* InfoPlist.strings */; };
+		B38FC8FF18289758008285BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B38FC8FE18289758008285BE /* main.m */; };
+		B38FC90318289758008285BE /* DOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B38FC90218289758008285BE /* DOCAppDelegate.m */; };
+		B38FC90618289758008285BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B38FC90418289758008285BE /* Main.storyboard */; };
+		B38FC90918289758008285BE /* DOCMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B38FC90818289758008285BE /* DOCMasterViewController.m */; };
+		B38FC90C18289758008285BE /* DOCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B38FC90B18289758008285BE /* DOCDetailViewController.m */; };
+		B38FC90E18289758008285BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B38FC90D18289758008285BE /* Images.xcassets */; };
+		B38FC91518289758008285BE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC91418289758008285BE /* XCTest.framework */; };
+		B38FC91618289758008285BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC8F218289758008285BE /* Foundation.framework */; };
+		B38FC91718289758008285BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38FC8F618289758008285BE /* UIKit.framework */; };
+		B38FC91F18289758008285BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B38FC91D18289758008285BE /* InfoPlist.strings */; };
+		B38FC92118289758008285BE /* Patient_lyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B38FC92018289758008285BE /* Patient_lyTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B38FC91818289758008285BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B38FC8E718289758008285BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B38FC8EE18289758008285BE;
+			remoteInfo = Patient.ly;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B38FC8EF18289758008285BE /* Patient.ly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patient.ly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B38FC8F218289758008285BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B38FC8F418289758008285BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B38FC8F618289758008285BE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		B38FC8FA18289758008285BE /* Patient.ly-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Patient.ly-Info.plist"; sourceTree = "<group>"; };
+		B38FC8FC18289758008285BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B38FC8FE18289758008285BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B38FC90018289758008285BE /* Patient.ly-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Patient.ly-Prefix.pch"; sourceTree = "<group>"; };
+		B38FC90118289758008285BE /* DOCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DOCAppDelegate.h; sourceTree = "<group>"; };
+		B38FC90218289758008285BE /* DOCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DOCAppDelegate.m; sourceTree = "<group>"; };
+		B38FC90518289758008285BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B38FC90718289758008285BE /* DOCMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DOCMasterViewController.h; sourceTree = "<group>"; };
+		B38FC90818289758008285BE /* DOCMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DOCMasterViewController.m; sourceTree = "<group>"; };
+		B38FC90A18289758008285BE /* DOCDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DOCDetailViewController.h; sourceTree = "<group>"; };
+		B38FC90B18289758008285BE /* DOCDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DOCDetailViewController.m; sourceTree = "<group>"; };
+		B38FC90D18289758008285BE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B38FC91318289758008285BE /* Patient.lyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Patient.lyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B38FC91418289758008285BE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		B38FC91C18289758008285BE /* Patient.lyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Patient.lyTests-Info.plist"; sourceTree = "<group>"; };
+		B38FC91E18289758008285BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B38FC92018289758008285BE /* Patient_lyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Patient_lyTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B38FC8EC18289758008285BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC8F518289758008285BE /* CoreGraphics.framework in Frameworks */,
+				B38FC8F718289758008285BE /* UIKit.framework in Frameworks */,
+				B38FC8F318289758008285BE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B38FC91018289758008285BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC91518289758008285BE /* XCTest.framework in Frameworks */,
+				B38FC91718289758008285BE /* UIKit.framework in Frameworks */,
+				B38FC91618289758008285BE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B38FC8E618289758008285BE = {
+			isa = PBXGroup;
+			children = (
+				B38FC8F818289758008285BE /* Patient.ly */,
+				B38FC91A18289758008285BE /* Patient.lyTests */,
+				B38FC8F118289758008285BE /* Frameworks */,
+				B38FC8F018289758008285BE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B38FC8F018289758008285BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC8EF18289758008285BE /* Patient.ly.app */,
+				B38FC91318289758008285BE /* Patient.lyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B38FC8F118289758008285BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC8F218289758008285BE /* Foundation.framework */,
+				B38FC8F418289758008285BE /* CoreGraphics.framework */,
+				B38FC8F618289758008285BE /* UIKit.framework */,
+				B38FC91418289758008285BE /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B38FC8F818289758008285BE /* Patient.ly */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC90118289758008285BE /* DOCAppDelegate.h */,
+				B38FC90218289758008285BE /* DOCAppDelegate.m */,
+				B38FC90418289758008285BE /* Main.storyboard */,
+				B38FC90718289758008285BE /* DOCMasterViewController.h */,
+				B38FC90818289758008285BE /* DOCMasterViewController.m */,
+				B38FC90A18289758008285BE /* DOCDetailViewController.h */,
+				B38FC90B18289758008285BE /* DOCDetailViewController.m */,
+				B38FC90D18289758008285BE /* Images.xcassets */,
+				B38FC8F918289758008285BE /* Supporting Files */,
+			);
+			path = Patient.ly;
+			sourceTree = "<group>";
+		};
+		B38FC8F918289758008285BE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC8FA18289758008285BE /* Patient.ly-Info.plist */,
+				B38FC8FB18289758008285BE /* InfoPlist.strings */,
+				B38FC8FE18289758008285BE /* main.m */,
+				B38FC90018289758008285BE /* Patient.ly-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B38FC91A18289758008285BE /* Patient.lyTests */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC92018289758008285BE /* Patient_lyTests.m */,
+				B38FC91B18289758008285BE /* Supporting Files */,
+			);
+			path = Patient.lyTests;
+			sourceTree = "<group>";
+		};
+		B38FC91B18289758008285BE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B38FC91C18289758008285BE /* Patient.lyTests-Info.plist */,
+				B38FC91D18289758008285BE /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B38FC8EE18289758008285BE /* Patient.ly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B38FC92418289758008285BE /* Build configuration list for PBXNativeTarget "Patient.ly" */;
+			buildPhases = (
+				B38FC8EB18289758008285BE /* Sources */,
+				B38FC8EC18289758008285BE /* Frameworks */,
+				B38FC8ED18289758008285BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Patient.ly;
+			productName = Patient.ly;
+			productReference = B38FC8EF18289758008285BE /* Patient.ly.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B38FC91218289758008285BE /* Patient.lyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B38FC92718289758008285BE /* Build configuration list for PBXNativeTarget "Patient.lyTests" */;
+			buildPhases = (
+				B38FC90F18289758008285BE /* Sources */,
+				B38FC91018289758008285BE /* Frameworks */,
+				B38FC91118289758008285BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B38FC91918289758008285BE /* PBXTargetDependency */,
+			);
+			name = Patient.lyTests;
+			productName = Patient.lyTests;
+			productReference = B38FC91318289758008285BE /* Patient.lyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B38FC8E718289758008285BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = DOC;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Angie Lal";
+				TargetAttributes = {
+					B38FC91218289758008285BE = {
+						TestTargetID = B38FC8EE18289758008285BE;
+					};
+				};
+			};
+			buildConfigurationList = B38FC8EA18289758008285BE /* Build configuration list for PBXProject "Patient.ly" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B38FC8E618289758008285BE;
+			productRefGroup = B38FC8F018289758008285BE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B38FC8EE18289758008285BE /* Patient.ly */,
+				B38FC91218289758008285BE /* Patient.lyTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B38FC8ED18289758008285BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC90E18289758008285BE /* Images.xcassets in Resources */,
+				B38FC8FD18289758008285BE /* InfoPlist.strings in Resources */,
+				B38FC90618289758008285BE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B38FC91118289758008285BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC91F18289758008285BE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B38FC8EB18289758008285BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC90C18289758008285BE /* DOCDetailViewController.m in Sources */,
+				B38FC8FF18289758008285BE /* main.m in Sources */,
+				B38FC90318289758008285BE /* DOCAppDelegate.m in Sources */,
+				B38FC90918289758008285BE /* DOCMasterViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B38FC90F18289758008285BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38FC92118289758008285BE /* Patient_lyTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B38FC91918289758008285BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B38FC8EE18289758008285BE /* Patient.ly */;
+			targetProxy = B38FC91818289758008285BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B38FC8FB18289758008285BE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B38FC8FC18289758008285BE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B38FC90418289758008285BE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B38FC90518289758008285BE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B38FC91D18289758008285BE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B38FC91E18289758008285BE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B38FC92218289758008285BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		B38FC92318289758008285BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B38FC92518289758008285BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Patient.ly/Patient.ly-Prefix.pch";
+				INFOPLIST_FILE = "Patient.ly/Patient.ly-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B38FC92618289758008285BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Patient.ly/Patient.ly-Prefix.pch";
+				INFOPLIST_FILE = "Patient.ly/Patient.ly-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		B38FC92818289758008285BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Patient.ly.app/Patient.ly";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Patient.ly/Patient.ly-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Patient.lyTests/Patient.lyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		B38FC92918289758008285BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Patient.ly.app/Patient.ly";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Patient.ly/Patient.ly-Prefix.pch";
+				INFOPLIST_FILE = "Patient.lyTests/Patient.lyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B38FC8EA18289758008285BE /* Build configuration list for PBXProject "Patient.ly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B38FC92218289758008285BE /* Debug */,
+				B38FC92318289758008285BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B38FC92418289758008285BE /* Build configuration list for PBXNativeTarget "Patient.ly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B38FC92518289758008285BE /* Debug */,
+				B38FC92618289758008285BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B38FC92718289758008285BE /* Build configuration list for PBXNativeTarget "Patient.lyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B38FC92818289758008285BE /* Debug */,
+				B38FC92918289758008285BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B38FC8E718289758008285BE /* Project object */;
+}
