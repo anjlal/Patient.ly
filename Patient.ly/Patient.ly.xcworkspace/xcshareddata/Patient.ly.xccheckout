@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DFC98D82-5E9A-44C1-BAD8-FF80A50C8B81</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Patient.ly</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0CA932A1-7C55-4636-9F20-51E9B3A8C189</key>
+		<string>https://github.com/chriszf/flask_template.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Patient.ly/Patient.ly.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0CA932A1-7C55-4636-9F20-51E9B3A8C189</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/chriszf/flask_template.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0CA932A1-7C55-4636-9F20-51E9B3A8C189</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0CA932A1-7C55-4636-9F20-51E9B3A8C189</string>
+			<key>IDESourceControlWCCName</key>
+			<string>flask_template</string>
+		</dict>
+	</array>
+</dict>
+</plist>

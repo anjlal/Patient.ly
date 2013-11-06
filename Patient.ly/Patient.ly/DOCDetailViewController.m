@@ -7,6 +7,7 @@
 //
 
 #import "DOCDetailViewController.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface DOCDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;

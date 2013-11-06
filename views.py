@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request, g, session, url_for, flash
+from flask import Flask, render_template, redirect, request, g, session, url_for, flash, jsonify, Response
 from model import User, Post
 from flask.ext.login import LoginManager, login_required, login_user, current_user
 from flaskext.markdown import Markdown
 import config
 import forms
 import model
+import json
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -22,12 +23,28 @@ def load_user(user_id):
 
 # Adding markdown capability to the app
 Markdown(app)
-
+patients = [
+    {
+        'id': 1,
+        'name': u'Anjana Lal',
+        'description': u'Stiff neck.', 
+    },
+    {
+        'id': 2,
+        'name': u'Smita Lal',
+        'description': u'Femara refill.', 
+    }
+]
 @app.route("/")
 def index():
-    posts = Post.query.all()
-    return render_template("index.html", posts=posts)
-
+    # posts = Post.query.all()
+    # return render_template("index.html", posts=posts)
+    # js = json.dumps( {'patients': patients} )
+    # resp = Response(js, status=200, mimetype='application/json')
+    # return resp
+    
+    return jsonify({'patients': patients})
+    
 @app.route("/post/<int:id>")
 def view_post(id):
     post = Post.query.get(id)

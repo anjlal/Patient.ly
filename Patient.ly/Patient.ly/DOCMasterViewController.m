@@ -9,6 +9,7 @@
 #import "DOCMasterViewController.h"
 
 #import "DOCDetailViewController.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface DOCMasterViewController ()
 
@@ -46,21 +47,42 @@
 - (void)insertNewObject:(id)sender
 {
     if (!self.objects) {
-        self.objects = [[NSMutableArray alloc] init];
+        self.objects = [NSMutableArray array];
     }
-    NSString *patient = @"{ \"Patient\": {\"Name\": \"Angie\"} }";
-    NSData *patientData = [patient dataUsingEncoding:NSUTF8StringEncoding];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
-    NSError *error;
-    id patientObject = [NSJSONSerialization JSONObjectWithData:patientData options:0 error: &error];
-    NSDictionary *patientDictionary = patientObject;
-    if (error){
-        NSLog(@"Error: %@", error);
-    }
-    NSLog(@"%@", patientDictionary);
-    [_objects insertObject:patientDictionary[@"Patient"][@"Name"] atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [manager GET:@"http://localhost:5000/"
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"Type: %@", [responseObject[@"patients"] class]);
+
+             NSLog(@"JSON: %@", responseObject);
+             [_objects addObjectsFromArray:responseObject[@"patients"]];
+             [self.tableView reloadData];
+
+             //[_objects insertObject:responseObject[@"patients"] atIndex:0];
+
+             //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+             //[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"This request failed: %@", error);
+         }];
+
+
+//    NSString *patient = @"{ \"Patient\": {\"Name\": \"Angie\"} }";
+    //NSString *patient = responseObject;
+    //NSData *patientData = [patient dataUsingEncoding:NSUTF8StringEncoding];
+
+    //             NSError *error;
+    //             id patientObject = [NSJSONSerialization JSONObjectWithData:patientData options:0 error: &error];
+    //             NSDictionary *patientDictionary = patientObject;
+    //             if (error){
+    //                 NSLog(@"Error: %@", error);
+    //             }
+    //NSLog(@"%@", patientDictionary);
+    //[_objects insertObject:responseObject[@"patients"][@"name"] atIndex:0];
+
 }
 
 #pragma mark - UITableViewDataSource
@@ -79,8 +101,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSString *object = self.objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSDictionary *object = self.objects[indexPath.row];
+    cell.textLabel.text = object[@"name"];
     return cell;
 }
 
