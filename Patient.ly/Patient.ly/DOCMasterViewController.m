@@ -10,10 +10,11 @@
 
 #import "DOCDetailViewController.h"
 #import <AFNetworking/AFNetworking.h>
+#import "DOCTask.h"
 
 @interface DOCMasterViewController ()
 
-@property (strong, nonatomic) NSMutableArray *objects;
+@property (strong, nonatomic) NSMutableArray *tasks;
 
 @end
 
@@ -36,6 +37,41 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DOCDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+
+    if (!self.tasks) {
+        self.tasks = [NSMutableArray array];
+    }
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
+    [manager GET:@"http://localhost:5000/"
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//             NSLog(@"Type: %@", [responseObject[@"patients"] class]);
+
+//             NSLog(@"JSON: %@", responseObject);
+             for (NSDictionary *dict in responseObject[@"patients"]) {
+                 NSLog(@"%@", dict);
+                 [_tasks addObject:[[DOCTask alloc]initWithId:[dict objectForKey:@"id"] name:[dict objectForKey:@"name"] description:[dict objectForKey:@"description"]]];
+             }
+             [self.tableView reloadData];
+
+//             [_tasks addObjectsFromArray:responseObject[@"patients"]];
+
+
+//             NSDictionary *task;
+//             for (int i = 0; i < [_tasks count]; i++)
+//             {
+//                 task = [_tasks objectAtIndex:i];
+//                 NSLog(@"%@", [task objectForKey:@"id"]);
+//             }
+             //[_objects insertObject:responseObject[@"patients"] atIndex:0];
+
+             //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+             //[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"This request failed: %@", error);
+         }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,8 +82,8 @@
 
 - (void)insertNewObject:(id)sender
 {
-    if (!self.objects) {
-        self.objects = [NSMutableArray array];
+    if (!self.tasks) {
+        self.tasks = [NSMutableArray array];
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
@@ -57,7 +93,7 @@
              NSLog(@"Type: %@", [responseObject[@"patients"] class]);
 
              NSLog(@"JSON: %@", responseObject);
-             [_objects addObjectsFromArray:responseObject[@"patients"]];
+             [_tasks addObjectsFromArray:responseObject[@"patients"]];
              [self.tableView reloadData];
 
              //[_objects insertObject:responseObject[@"patients"] atIndex:0];
@@ -94,15 +130,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _objects.count;
+    return _tasks.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDictionary *object = self.objects[indexPath.row];
-    cell.textLabel.text = object[@"name"];
+    //NSDictionary *object = self.tasks[indexPath.row];
+    //cell.textLabel.text = object[@"name"];
+
+    DOCTask *task = self.tasks[indexPath.row];
+    cell.textLabel.text = task.name;
+
     return cell;
 }
 
@@ -117,7 +157,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.objects removeObjectAtIndex:indexPath.row];
+        [self.tasks removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -142,8 +182,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *object = self.objects[indexPath.row];
-    self.detailViewController.detailItem = object;
+    DOCTask *task = self.tasks[indexPath.row];
+    self.detailViewController.task.tid = task.tid;
+    self.detailViewController.task.name = task.name;
+    self.detailViewController.task.description = task.description;
+
 }
 
 @end

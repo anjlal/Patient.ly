@@ -7,7 +7,9 @@
 //
 
 #import "DOCDetailViewController.h"
-#import <AFNetworking/AFNetworking.h>
+#import "DOCMasterViewController.h"
+#import "AFNetworking/AFNetworking.h"
+#import "DOCTask.h"
 
 @interface DOCDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -18,10 +20,10 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setTask:(DOCTask *)newTask
 {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
+    if (_task != newTask) {
+        _task = newTask;
         
         // Update the view.
         [self configureView];
@@ -36,8 +38,12 @@
 {
     // Update the user interface for the detail item.
 
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+    if (_task) {
+
+        _taskIdLabel.text = [NSString stringWithFormat:@"%@", _task.tid];
+        _nameLabel.text = _task.name;
+        _descriptionTextField.text = _task.description;
+        
     }
 }
 
