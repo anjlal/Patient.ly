@@ -51,7 +51,17 @@
 //             NSLog(@"JSON: %@", responseObject);
              for (NSDictionary *dict in responseObject[@"patients"]) {
                  NSLog(@"%@", dict);
-                 [_tasks addObject:[[DOCTask alloc]initWithId:[dict objectForKey:@"id"] name:[dict objectForKey:@"name"] description:[dict objectForKey:@"description"]]];
+                 [_tasks addObject:[[DOCTask alloc] initWithId:[dict objectForKey:@"id"] name:[dict objectForKey:@"name"] issue:[dict objectForKey:@"description"]]];
+             }
+             /* Set first task as displaying task */
+
+/* Usually need to update the UI on the main thread, but for now let's not do this */
+//             dispatch_async(dispatch_get_main_queue(), ^{
+//                 ;
+//             });
+
+             if ([_tasks count] > 0) {
+                 self.detailViewController.task = _tasks[0];
              }
              [self.tableView reloadData];
 
@@ -183,10 +193,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DOCTask *task = self.tasks[indexPath.row];
-    self.detailViewController.task.tid = task.tid;
-    self.detailViewController.task.name = task.name;
-    self.detailViewController.task.description = task.description;
-
+    self.detailViewController.task = task;
 }
 
 @end

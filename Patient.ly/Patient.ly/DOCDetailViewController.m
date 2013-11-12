@@ -12,7 +12,11 @@
 #import "DOCTask.h"
 
 @interface DOCDetailViewController ()
+
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
+@property (strong, nonatomic) IBOutlet UIView *containerView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
+
 - (void)configureView;
 @end
 
@@ -40,10 +44,17 @@
 
     if (_task) {
 
+        [self.indicatorView stopAnimating];
         _taskIdLabel.text = [NSString stringWithFormat:@"%@", _task.tid];
         _nameLabel.text = _task.name;
-        _descriptionTextField.text = _task.description;
-        
+        _descriptionTextField.text = _task.issue;
+        self.containerView.hidden = NO;
+
+    } else {
+
+        [self.indicatorView startAnimating];
+        self.containerView.hidden = YES;
+
     }
 }
 

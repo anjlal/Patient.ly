@@ -10,13 +10,13 @@
 #import "DOCMasterViewController.h"
 
 @implementation DOCTask
--(DOCTask *)initWithId:(NSNumber *)tid name:(NSString *)name description:(NSString *)description
+-(DOCTask *)initWithId:(NSNumber *)tid name:(NSString *)name issue:(NSString *)issue
 {
     self = [super init];
     if (self) {
         _tid = tid;
         _name = name;
-        _description = description;
+        _issue = issue;
     }
     return self;
 }

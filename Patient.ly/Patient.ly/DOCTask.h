@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSNumber *tid;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *issue;
 //@property (nonatomic, strong) NSDate *timestamp;
 
--(DOCTask *)initWithId:(NSNumber *)pid name:(NSString *)name description:(NSString *)description;
+-(DOCTask *)initWithId:(NSNumber *)pid name:(NSString *)name issue:(NSString *)issue;
 @end
