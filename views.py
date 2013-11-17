@@ -23,28 +23,117 @@ def load_user(user_id):
 
 # Adding markdown capability to the app
 Markdown(app)
-patients = [
+# patients = [
+#     {
+#         'id': 1,
+#         'name': u'Anjana Lal',
+#         'description': u'Stiff neck.', 
+#     },
+#     {
+#         'id': 2,
+#         'name': u'Smita Lal',
+#         'description': u'Femara refill.', 
+#     },
+#     {
+#         'id': 3,
+#         'name': u'Rishi Lal',
+#         'description': u'Migraine.',
+#     }
+#     
+# ]
+# patients = [
+#     {
+#         'id': 1,
+#         'name': u'Anjana Lal',
+#         'description': u'Stiff neck.', 
+#     },
+#     {
+#         'id': 2,
+#         'name': u'Smita Lal',
+#         'description': u'Femara refill.', 
+#     },
+#     {
+#         'id': 3,
+#         'name': u'Rishi Lal',
+#         'description': u'Migraine.',
+#     }
+#     
+# ]
+tasks = [
     {
         'id': 1,
-        'name': u'Anjana Lal',
-        'description': u'Stiff neck.', 
+        'description': u'Blood clot.', 
+        'patient': {'id': 1, 'name': u'Count Dracula', 'age': 128, 'phoneNumber': '408-807-4454'}
     },
     {
         'id': 2,
-        'name': u'Smita Lal',
-        'description': u'Femara refill.', 
+        'description': u'Jaundice.', 
+        'patient': {'id': 2, 'name': u'Big Bird', 'age': 54, 'phoneNumber': '408-807-7577'}
+    },
+    {
+        'id': 3,
+        'description': u'Irritable bowel syndrome',
+        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'}
+    },
+    {
+        'id': 4,
+        'description': u'Diabetic coma.',
+        'patient': {'id': 4, 'name': u'Cookie Monster', 'age': 5, 'phoneNumber': '408-266-5437'}
+    },
+    {
+        'id': 5,
+        'description': u'Halitosis',
+        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'}
+    }
+    
+]
+
+patient_tasks = [
+    {
+        'id': 4,
+        'description': u'Diabetic coma.',
+    },
+    {
+        'id': 5,
+        'description': u'Halitosis',
     }
 ]
+# 
+# tasks = [
+#     {
+#         'id': 1,
+#         'pid': 1,
+#         'pname': u'Anjana Lal',
+#         'description': u'Stiff neck.'
+#     },
+#     
+#     {
+#         'id': 2,
+#         'pid': 3,
+#         'pname': u'Rishi Lal',
+#         'description': u'Migraine.'
+#     },
+#     {
+#         'id': 3,
+#         'pid': 2,
+#         'pname': u'Smita Lal',
+#         'description': u'Femara refill'
+#     }
+# ]
 @app.route("/")
 def index():
     # posts = Post.query.all()
     # return render_template("index.html", posts=posts)
-    # js = json.dumps( {'patients': patients} )
+    # js = json.dumps( {'tasks': tasks} )
     # resp = Response(js, status=200, mimetype='application/json')
     # return resp
     
-    return jsonify({'patients': patients})
-    
+    return jsonify({'tasks': tasks})
+
+@app.route("/tasks/<int:id>")
+def view_tasks(id):
+    return jsonify({'tasks': patient_tasks})    
+
 @app.route("/post/<int:id>")
 def view_post(id):
     post = Post.query.get(id)
