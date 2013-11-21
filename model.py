@@ -18,14 +18,15 @@ session = scoped_session(sessionmaker(bind=engine,
 Base = declarative_base()
 Base.query = session.query_property()
 
-class User(Base, UserMixin):
-    __tablename__ = "users" 
+class Provider(Base, UserMixin):
+    __tablename__ = "providers" 
     id = Column(Integer, primary_key=True)
+    phone_number = Column(String(16), nullable=False)
     email = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
     salt = Column(String(64), nullable=False)
 
-    posts = relationship("Post", uselist=True)
+    tasks = relationship("Task", uselist=True, backref="providers")
 
     def set_password(self, password):
         self.salt = bcrypt.gensalt()
@@ -35,28 +36,83 @@ class User(Base, UserMixin):
     def authenticate(self, password):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
+    
+    
+class Patient(Base):
+    __tablename__ = "patients" 
+    id = Column(Integer, primary_key=True)
+    name = Column(String(70), nullable=False)
+    birth_year = Column(Integer, nullable=False)
+    phone_number = Column(String(16), nullable=False)
+    photo_filename = Column(String(64), nullable=True)
 
-class Post(Base):
-    __tablename__ = "posts"
+    tasks = relationship("Task", uselist=True, backref="patients")
+
+
+class Task(Base):
+    __tablename__ = "tasks"
     
     id = Column(Integer, primary_key=True)
-    title = Column(String(64), nullable=False)
-    body = Column(Text, nullable=False)
+    description = Column(Text, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
-    posted_at = Column(DateTime, nullable=True, default=None)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    updated_at = Column(DateTime, nullable=True, default=None)
+    patient_id = Column(Integer, ForeignKey("patients.id"))
+    provider_id = Column(Integer, ForeignKey("providers.id"))
+    status = Column(String(16), nullable=False, default="UNREAD")
+    priority = Column(Integer, nullable=True)
+    
+    
+    patient = relationship("Patient")
+    provider = relationship("Provider")
 
-    user = relationship("User")
+class Note(Base):
+    __tablename__ = "notes"
+    
+    id = Column(Integer, primary_key=True)
+    task_id = Column(Integer, ForeignKey("tasks.id"))
+    content = Column(Text, nullable=True)
+    
+    task = relationship("Task")
+
+# class User(Base, UserMixin):
+#     __tablename__ = "users" 
+#     id = Column(Integer, primary_key=True)
+#     email = Column(String(64), nullable=False)
+#     password = Column(String(64), nullable=False)
+#     salt = Column(String(64), nullable=False)
+# 
+#     posts = relationship("Post", uselist=True)
+# 
+#     def set_password(self, password):
+#         self.salt = bcrypt.gensalt()
+#         password = password.encode("utf-8")
+#         self.password = bcrypt.hashpw(password, self.salt)
+# 
+#     def authenticate(self, password):
+#         password = password.encode("utf-8")
+#         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
+# 
+# class Post(Base):
+#     __tablename__ = "posts"
+#     
+#     id = Column(Integer, primary_key=True)
+#     title = Column(String(64), nullable=False)
+#     body = Column(Text, nullable=False)
+#     created_at = Column(DateTime, nullable=False, default=datetime.now)
+#     posted_at = Column(DateTime, nullable=True, default=None)
+#     user_id = Column(Integer, ForeignKey("users.id"))
+# 
+#     user = relationship("User")
 
 
 def create_tables():
     Base.metadata.create_all(engine)
-    u = User(email="test@test.com")
-    u.set_password("unicorn")
-    session.add(u)
-    p = Post(title="This is a test post", body="This is the body of a test post.")
-    u.posts.append(p)
-    session.commit()
+    # u = User(email="test@test.com")
+    # u.set_password("unicorn")
+    # session.add(u)
+    # p = Post(title="This is a test post", body="This is the body of a test post.")
+    # u.posts.append(p)
+    # session.commit()
 
 if __name__ == "__main__":
     create_tables()
