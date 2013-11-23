@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect, request, g, session, url_for, flash, jsonify, Response
-from model import User, Post
+from model import Patient, Provider, Task, Note #User, Post
 from flask.ext.login import LoginManager, login_required, login_user, current_user
 from flaskext.markdown import Markdown
 import config
 import forms
 import model
 import json
+import twilio.twiml
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -64,62 +65,74 @@ tasks = [
         'id': 1,
         'description': u'Blood clot.', 
         'patient': {'id': 1, 'name': u'Count Dracula', 'age': 128, 'phoneNumber': '408-807-4454'},
-        'providerId': 2
-    },
-    {
-        'id': 2,
-        'description': u'Jaundice.', 
-        'patient': {'id': 2, 'name': u'Big Bird', 'age': 54, 'phoneNumber': '408-807-7577'},
-        'providerId': 3
-        
+        'providerId': 2,
+        'status': 'UNREAD'
     },
     {
         'id': 3,
         'description': u'Irritable bowel syndrome',
         'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
-        'providerId': 2
-        
+        'providerId': 2,
+        'status': 'UNREAD'
+    },
+    {
+        'id': 2,
+        'description': u'Jaundice.', 
+        'patient': {'id': 2, 'name': u'Big Bird', 'age': 54, 'phoneNumber': '408-807-7577'},
+        'providerId': 3,
+        'status': 'UNREAD'  
     },
     {
         'id': 4,
         'description': u'Diabetic coma.',
         'patient': {'id': 4, 'name': u'Cookie Monster', 'age': 5, 'phoneNumber': '408-266-5437'},
-        'providerId': 3
-        
+        'providerId': 3,
+        'status': 'UNREAD'
     },
     {
         'id': 5,
         'description': u'Halitosis',
         'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
-        'providerId': 1
-        
+        'providerId': 1,
+        'status': 'READ'    
+    },
+    {
+        'id': 6,
+        'description': u'asfasdf',
+        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
+        'providerId': 1,
+        'status': 'READ'
     }
-    
 ]
 
 patient_tasks = [
     {
         'id': 4,
         'description': u'Diabetic coma.',
+        'status': u'UNREAD'
     },
     {
         'id': 5,
         'description': u'Halitosis',
+        'status': u'READ'
     }
 ]
 
 providers = [
     {
         'id': 1,
-        'name': u'Niraj',
+        'email': u'angie@hb.com',
+        'phoneNumber': u'+14089161903'
     },
     {
         'id': 3,
-        'name': u'Anil',
+        'email': u'drwho@hb.com',
+        'phoneNumber': u'+14089161903'
     },
     {
         'id': 2,
-        'name': u'Shyamali',
+        'email': u'drseus@hb.com',
+        'phoneNumber': u'+14089161903'
     }
 ]
 # 
@@ -144,7 +157,7 @@ providers = [
 #         'description': u'Femara refill'
 #     }
 # ]
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     # posts = Post.query.all()
     # return render_template("index.html", posts=posts)
@@ -152,15 +165,54 @@ def index():
     # resp = Response(js, status=200, mimetype='application/json')
     # return resp
     
-    return jsonify({'tasks': tasks})
+    resp = twilio.twiml.Response()
+    message = "Thank you for your message! We will process your request ASAP."
+    #  #     response_string = str(resp)
+    
+    text_body = request.values.get('Body')
+    from_number = request.values.get('From')
+    # create_task(body, from_number)
+    # provider = Provider.query.get(3)
+    
+    # return jsonify(json_list=[i.serialize for i in qryresult.all()])
+    # serialized_tasks = serialize_tasks(provider.id)
+
+    
+    patient = Patient.query.filter_by(phone_number=from_number).first()
+    provider = Provider.query.get(3)
+    task = Task(description=text_body, patient_id=patient.id, provider_id=provider.id)
+    model.session.add(task)
+    model.session.commit()
+    
+    
+    resp.sms(message)
+    return str(resp)
+
+    
+    
+    # return jsonify({'tasks': tasks})
+
+@app.route("/tasks")
+def view_all_tasks():
+    provider = Provider.query.get(3)
+    tasks = Task.query.filter_by(provider_id=provider.id).all()
+    return jsonify(tasks=[i.serialize_task for i in tasks])
+    
+    # return jsonify({'tasks': tasks})  
 
 @app.route("/tasks/<int:id>")
 def view_tasks(id):
-    return jsonify({'tasks': patient_tasks})    
+    patient_tasks = Task.query.filter_by(patient_id=id).all()
+    return jsonify(tasks=[i.serialize_task for i in patient_tasks])
+    
+    
+    # return jsonify({'tasks': patient_tasks})    
 
 @app.route("/providers")
 def view_providers():
-    return jsonify({'providers': providers})
+    providers = Provider.query.all()
+    return jsonify(providers=[i.serialize_provider for i in providers])
+    # return jsonify({'providers': providers})
 @app.route("/post/<int:id>")
 def view_post(id):
     post = Post.query.get(id)
@@ -210,6 +262,10 @@ def authenticate():
     login_user(user)
     return redirect(request.args.get("next", url_for("index")))
 
+def create_task(text_body, from_number):
+    patient = Patient.query.filter_by(phone_number=from_number).first()
+    provider = Provider.query.get(3)
+    task = Task(description=text_body, patient_id=patient.id, provider_id=provider.id)
 
 if __name__ == "__main__":
     app.run(debug=True)

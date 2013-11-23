@@ -36,8 +36,16 @@ class Provider(Base, UserMixin):
     def authenticate(self, password):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
-    
-    
+        
+    @property
+    def serialize_provider(self):
+        """Return object data in easily serializeable format"""
+        return {
+           'id': self.id,
+           'email': self.email,
+           'phoneNumber': self.phone_number
+       }
+       
 class Patient(Base):
     __tablename__ = "patients" 
     id = Column(Integer, primary_key=True)
@@ -47,7 +55,6 @@ class Patient(Base):
     photo_filename = Column(String(64), nullable=True)
 
     tasks = relationship("Task", uselist=True, backref="patients")
-
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -64,6 +71,21 @@ class Task(Base):
     
     patient = relationship("Patient")
     provider = relationship("Provider")
+    
+    @property
+    def serialize_task(self):
+       """Return object data in easily serializeable format"""
+       patient = Patient.query.get(self.patient_id)
+       return {
+           'id': self.id,
+           'description': self.description,
+           'patient': {'id': patient.id, 'name': patient.name, 'birthYear' : patient.birth_year,'phoneNumber': patient.phone_number,'photoFilename': patient.photo_filename},
+           'providerId': self.provider_id,
+           'createdAt': dump_datetime(self.created_at),
+           'updatedAt': dump_datetime(self.updated_at),
+           'status': self.status,
+           'priority': self.priority
+       }
 
 class Note(Base):
     __tablename__ = "notes"
@@ -104,7 +126,12 @@ class Note(Base):
 # 
 #     user = relationship("User")
 
-
+def dump_datetime(value):
+    """Deserialize datetime object into string form for JSON processing."""
+    if value is None:
+        return None
+    return value.strftime("%Y-%m-%d %H:%M:%S")
+    
 def create_tables():
     Base.metadata.create_all(engine)
     # u = User(email="test@test.com")
