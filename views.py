@@ -167,13 +167,10 @@ def index():
     
     resp = twilio.twiml.Response()
     message = "Thank you for your message! We will process your request ASAP."
-    #  #     response_string = str(resp)
     
     text_body = request.values.get('Body')
     from_number = request.values.get('From')
-    # create_task(body, from_number)
-    # provider = Provider.query.get(3)
-    
+
     # return jsonify(json_list=[i.serialize for i in qryresult.all()])
     # serialized_tasks = serialize_tasks(provider.id)
 
@@ -191,28 +188,64 @@ def index():
     
     
     # return jsonify({'tasks': tasks})
-
+@app.route("/tasks/<int:id>/reassign", methods=["POST"])
+def reassign(id):
+    updated_task = Task.query.filter_by(id=id).first()
+    updated_task.provider_id = int(request.form['providerId'])
+    model.session.commit()
+    return jsonify(task=updated_task.serialize_task)
+    
 @app.route("/tasks")
-def view_all_tasks():
+def view_tasks():
     provider = Provider.query.get(3)
     tasks = Task.query.filter_by(provider_id=provider.id).all()
-    return jsonify(tasks=[i.serialize_task for i in tasks])
-    
+    return jsonify(tasks=[task.serialize_task for task in tasks])
     # return jsonify({'tasks': tasks})  
 
+# desired: /patients/patient_id/tasks
 @app.route("/tasks/<int:id>")
-def view_tasks(id):
+def view_task(id):
     patient_tasks = Task.query.filter_by(patient_id=id).all()
     return jsonify(tasks=[i.serialize_task for i in patient_tasks])
     
     
     # return jsonify({'tasks': patient_tasks})    
-
+@app.route("/patients")
+def view_patients():    
+    patients = Patient.query.all()
+    return jsonify(providers=[i.serialize_patient for i in patients])
 @app.route("/providers")
 def view_providers():
     providers = Provider.query.all()
     return jsonify(providers=[i.serialize_provider for i in providers])
+
+
     # return jsonify({'providers': providers})
+    
+@app.route("/providers/log_in", methods=["POST"]) 
+def login():
+    email = request.form['email']
+    pw = request.form['password']
+
+    provider = Provider.query.filter_by(email=email, password=pw).first()
+    if provider:
+        return jsonify(token=(email+':'+pw), provider=provider.serialize_provider)
+    else:
+        return jsonify(error="Error: could not find user with given credentials"), 404
+        
+@app.route("/providers/current", methods=["GET"]) 
+def current_provider():
+    token = request.values.get('token')
+    tokenized = token.split(":")
+    email = tokenized[0]
+    pw = tokenized[1]
+
+    provider = Provider.query.filter_by(email=email, password=pw).first()
+    if provider:
+        return jsonify(provider=provider.serialize_provider)
+    else:
+        return jsonify(error="Error: could not find user with given credentials"), 404
+  
 @app.route("/post/<int:id>")
 def view_post(id):
     post = Post.query.get(id)
@@ -239,9 +272,9 @@ def create_post():
 
     return redirect(url_for("view_post", id=post.id))
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+# @app.route("/login")
+# def login():
+#     return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
 def authenticate():

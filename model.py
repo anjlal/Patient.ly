@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, DateTime, Text
-
+from sqlalchemy import insert, update, delete
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
 from flask.ext.login import UserMixin
@@ -55,6 +55,17 @@ class Patient(Base):
     photo_filename = Column(String(64), nullable=True)
 
     tasks = relationship("Task", uselist=True, backref="patients")
+    
+    @property
+    def serialize_patient(self):
+        """Return object data in easily serializeable format"""
+        return {
+           'id': self.id,
+           'name': self.name,
+           'birthYear': self.birth_year,
+           'phoneNumber': self.phone_number,
+           'photoFilename': self.photo_filename
+       }
 
 class Task(Base):
     __tablename__ = "tasks"
