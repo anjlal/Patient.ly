@@ -194,16 +194,22 @@ def reassign(id):
     updated_task.provider_id = int(request.form['providerId'])
     model.session.commit()
     return jsonify(task=updated_task.serialize_task)
-    
+
+@app.route("/tasks/<int:id>/status", methods=["POST"])
+def change_status(id):
+        updated_task = Task.query.filter_by(id=id).first()
+        updated_task.status = request.form['status']
+        model.session.commit()
+        return jsonify(task=updated_task.serialize_task)    
 @app.route("/tasks")
 def view_tasks():
-    provider = Provider.query.get(3)
-    tasks = Task.query.filter_by(provider_id=provider.id).all()
+    provider = Provider.query.get(request.values.get('provider_id'))
+    tasks = Task.query.filter_by(provider_id=provider.id, status='UNREAD').all()
     return jsonify(tasks=[task.serialize_task for task in tasks])
     # return jsonify({'tasks': tasks})  
 
 # desired: /patients/patient_id/tasks
-@app.route("/tasks/<int:id>")
+@app.route("/patients/<int:id>/tasks")
 def view_task(id):
     patient_tasks = Task.query.filter_by(patient_id=id).all()
     return jsonify(tasks=[i.serialize_task for i in patient_tasks])
@@ -213,7 +219,7 @@ def view_task(id):
 @app.route("/patients")
 def view_patients():    
     patients = Patient.query.all()
-    return jsonify(providers=[i.serialize_patient for i in patients])
+    return jsonify(patients=[i.serialize_patient for i in patients])
 @app.route("/providers")
 def view_providers():
     providers = Provider.query.all()
