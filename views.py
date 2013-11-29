@@ -230,6 +230,22 @@ def view_task(id):
 def view_patients():    
     patients = Patient.query.all()
     return jsonify(patients=[i.serialize_patient for i in patients])
+    
+@app.route("/patients/create", methods=["POST"])
+def create_patient():
+    name = request.form['name']
+    birth_year = request.form['birthYear']
+    photo = request.form['photo']
+    phone_number = request.form['phoneNumber']
+    
+    patient = Patient(name=name, birth_year=birth_year, photo_filename=photo, phone_number=phone_number)
+    model.session.add(patient)
+    model.session.commit()
+    
+    
+    
+    return jsonify(patient=patient.serialize_patient)    
+    
 @app.route("/providers")
 def view_providers():
     providers = Provider.query.all()
