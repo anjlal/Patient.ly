@@ -4,3 +4,5 @@ env
 *.db
 Patient.ly/Pods*
 twilio_send_sms.py
+config_copy.py
+send_sms.py
