@@ -60,81 +60,81 @@ Markdown(app)
 #     }
 #     
 # ]
-tasks = [
-    {
-        'id': 1,
-        'description': u'Blood clot.', 
-        'patient': {'id': 1, 'name': u'Count Dracula', 'age': 128, 'phoneNumber': '408-807-4454'},
-        'providerId': 2,
-        'status': 'UNREAD'
-    },
-    {
-        'id': 3,
-        'description': u'Irritable bowel syndrome',
-        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
-        'providerId': 2,
-        'status': 'UNREAD'
-    },
-    {
-        'id': 2,
-        'description': u'Jaundice.', 
-        'patient': {'id': 2, 'name': u'Big Bird', 'age': 54, 'phoneNumber': '408-807-7577'},
-        'providerId': 3,
-        'status': 'UNREAD'  
-    },
-    {
-        'id': 4,
-        'description': u'Diabetic coma.',
-        'patient': {'id': 4, 'name': u'Cookie Monster', 'age': 5, 'phoneNumber': '408-266-5437'},
-        'providerId': 3,
-        'status': 'UNREAD'
-    },
-    {
-        'id': 5,
-        'description': u'Halitosis',
-        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
-        'providerId': 1,
-        'status': 'READ'    
-    },
-    {
-        'id': 6,
-        'description': u'asfasdf',
-        'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
-        'providerId': 1,
-        'status': 'READ'
-    }
-]
-
-patient_tasks = [
-    {
-        'id': 4,
-        'description': u'Diabetic coma.',
-        'status': u'UNREAD'
-    },
-    {
-        'id': 5,
-        'description': u'Halitosis',
-        'status': u'READ'
-    }
-]
-
-providers = [
-    {
-        'id': 1,
-        'email': u'angie@hb.com',
-        'phoneNumber': u'+14089161903'
-    },
-    {
-        'id': 3,
-        'email': u'drwho@hb.com',
-        'phoneNumber': u'+14089161903'
-    },
-    {
-        'id': 2,
-        'email': u'drseus@hb.com',
-        'phoneNumber': u'+14089161903'
-    }
-]
+# tasks = [
+#     {
+#         'id': 1,
+#         'description': u'Blood clot.', 
+#         'patient': {'id': 1, 'name': u'Count Dracula', 'age': 128, 'phoneNumber': '408-807-4454'},
+#         'providerId': 2,
+#         'status': 'UNREAD'
+#     },
+#     {
+#         'id': 3,
+#         'description': u'Irritable bowel syndrome',
+#         'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
+#         'providerId': 2,
+#         'status': 'UNREAD'
+#     },
+#     {
+#         'id': 2,
+#         'description': u'Jaundice.', 
+#         'patient': {'id': 2, 'name': u'Big Bird', 'age': 54, 'phoneNumber': '408-807-7577'},
+#         'providerId': 3,
+#         'status': 'UNREAD'  
+#     },
+#     {
+#         'id': 4,
+#         'description': u'Diabetic coma.',
+#         'patient': {'id': 4, 'name': u'Cookie Monster', 'age': 5, 'phoneNumber': '408-266-5437'},
+#         'providerId': 3,
+#         'status': 'UNREAD'
+#     },
+#     {
+#         'id': 5,
+#         'description': u'Halitosis',
+#         'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
+#         'providerId': 1,
+#         'status': 'READ'    
+#     },
+#     {
+#         'id': 6,
+#         'description': u'asfasdf',
+#         'patient': {'id': 3, 'name': u'Oscar The Grouch', 'age': 25, 'phoneNumber': '408-821-9088'},
+#         'providerId': 1,
+#         'status': 'READ'
+#     }
+# ]
+# 
+# patient_tasks = [
+#     {
+#         'id': 4,
+#         'description': u'Diabetic coma.',
+#         'status': u'UNREAD'
+#     },
+#     {
+#         'id': 5,
+#         'description': u'Halitosis',
+#         'status': u'READ'
+#     }
+# ]
+# 
+# providers = [
+#     {
+#         'id': 1,
+#         'email': u'angie@hb.com',
+#         'phoneNumber': u'+14089161903'
+#     },
+#     {
+#         'id': 3,
+#         'email': u'drwho@hb.com',
+#         'phoneNumber': u'+14089161903'
+#     },
+#     {
+#         'id': 2,
+#         'email': u'drseus@hb.com',
+#         'phoneNumber': u'+14089161903'
+#     }
+# ]
 # 
 # tasks = [
 #     {
@@ -208,7 +208,17 @@ def view_tasks():
     return jsonify(tasks=[task.serialize_task for task in tasks])
     # return jsonify({'tasks': tasks})  
 
-# desired: /patients/patient_id/tasks
+@app.route("/tasks/create", methods=["POST"])
+def create_task():
+    description = request.form['description']
+    provider_id = int(request.form['provider_id'])
+    patient_id = int(request.form['patient_id'])
+    
+    task = Task(description=description, patient_id=patient_id, provider_id=provider_id)
+    model.session.add(task)
+    model.session.commit()
+    
+    return jsonify(task=task.serialize_task)    
 @app.route("/patients/<int:id>/tasks")
 def view_task(id):
     patient_tasks = Task.query.filter_by(patient_id=id).all()
