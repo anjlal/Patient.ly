@@ -6,7 +6,18 @@ import config
 import forms
 import model
 import json
+import os
 import twilio.twiml
+from twilio.rest import TwilioRestClient
+
+# Pull in configuration from system environment variables
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
+
+# create an authenticated client that can make requests to Twilio for your
+# account.
+client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -218,8 +229,21 @@ def create_task():
     model.session.add(task)
     model.session.commit()
     
-    return jsonify(task=task.serialize_task)    
-@app.route("/patients/<int:id>/tasks")
+    return jsonify(task=task.serialize_task)   
+    
+@app.route("/patients/<int:id>/message", methods=["POST"])
+def messaging_patient(id):
+    message = request.form['message']
+    provider_id = int(request.form['providerId'])
+
+    patient = Patient.query.get(id)
+    provider = Provider.query.get(provider_id)
+    
+    send_message(patient.name, provider.name, patient.phone_number, message)
+    
+    return jsonify({'result': 'success'})
+    
+@app.route("/patients/<int:id>/tasks", methods=["GET"])
 def view_task(id):
     patient_tasks = Task.query.filter_by(patient_id=id).all()
     return jsonify(tasks=[i.serialize_task for i in patient_tasks])
@@ -237,12 +261,16 @@ def create_patient():
     birth_year = request.form['birthYear']
     photo = request.form['photo']
     phone_number = request.form['phoneNumber']
+    provider_id = int(request.form['providerId'])
+    
+    provider = Provider.query.get(provider_id)
+    provider_name = provider.name
     
     patient = Patient(name=name, birth_year=birth_year, photo_filename=photo, phone_number=phone_number)
     model.session.add(patient)
     model.session.commit()
     
-    
+    send_message_helper(name, provider_name, phone_number)
     
     return jsonify(patient=patient.serialize_patient)    
     
@@ -277,60 +305,79 @@ def current_provider():
         return jsonify(provider=provider.serialize_provider)
     else:
         return jsonify(error="Error: could not find user with given credentials"), 404
-  
-@app.route("/post/<int:id>")
-def view_post(id):
-    post = Post.query.get(id)
-    return render_template("post.html", post=post)
 
-@app.route("/post/new")
-@login_required
-def new_post():
-    return render_template("new_post.html")
+# Handle a POST request to send a text message.
+@app.route('/message/<message>/<phone_number>', methods=['POST'])
+def send_message(message, phone_number):
+    # Send a text message to the number provided
+    message = client.sms.messages.create(to=phone_number,
+                                         from_=TWILIO_NUMBER,
+                                         body=body_text)
 
-@app.route("/post/new", methods=["POST"])
-@login_required
-def create_post():
-    form = forms.NewPostForm(request.form)
-    if not form.validate():
-        flash("Error, all fields are required")
-        return render_template("new_post.html")
-
-    post = Post(title=form.title.data, body=form.body.data)
-    current_user.posts.append(post) 
+    # Return a message indicating the text message is enroute
+    return 'Message on the way!' 
+def send_message_helper(name, provider_name, phone_number, message=None):
+    intro = "Hello %s, this is %s. " % (name, provider_name)
+    if (message):
+        body_text = intro + message
+        return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
+    body_text = intro + "Feel free to send me a message here with your requests/concerns."
+    return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
+     
     
-    model.session.commit()
-    model.session.refresh(post)
-
-    return redirect(url_for("view_post", id=post.id))
+# @app.route("/post/<int:id>")
+# def view_post(id):
+#     post = Post.query.get(id)
+#     return render_template("post.html", post=post)
+# 
+# @app.route("/post/new")
+# @login_required
+# def new_post():
+#     return render_template("new_post.html")
+# 
+# @app.route("/post/new", methods=["POST"])
+# @login_required
+# def create_post():
+#     form = forms.NewPostForm(request.form)
+#     if not form.validate():
+#         flash("Error, all fields are required")
+#         return render_template("new_post.html")
+# 
+#     post = Post(title=form.title.data, body=form.body.data)
+#     current_user.posts.append(post) 
+#     
+#     model.session.commit()
+#     model.session.refresh(post)
+# 
+#     return redirect(url_for("view_post", id=post.id))
 
 # @app.route("/login")
 # def login():
 #     return render_template("login.html")
 
-@app.route("/login", methods=["POST"])
-def authenticate():
-    form = forms.LoginForm(request.form)
-    if not form.validate():
-        flash("Incorrect username or password") 
-        return render_template("login.html")
-
-    email = form.email.data
-    password = form.password.data
-
-    user = User.query.filter_by(email=email).first()
-
-    if not user or not user.authenticate(password):
-        flash("Incorrect username or password") 
-        return render_template("login.html")
-
-    login_user(user)
-    return redirect(request.args.get("next", url_for("index")))
-
-def create_task(text_body, from_number):
-    patient = Patient.query.filter_by(phone_number=from_number).first()
-    provider = Provider.query.get(3)
-    task = Task(description=text_body, patient_id=patient.id, provider_id=provider.id)
+# @app.route("/login", methods=["POST"])
+# def authenticate():
+#     form = forms.LoginForm(request.form)
+#     if not form.validate():
+#         flash("Incorrect username or password") 
+#         return render_template("login.html")
+# 
+#     email = form.email.data
+#     password = form.password.data
+# 
+#     user = User.query.filter_by(email=email).first()
+# 
+#     if not user or not user.authenticate(password):
+#         flash("Incorrect username or password") 
+#         return render_template("login.html")
+# 
+#     login_user(user)
+#     return redirect(request.args.get("next", url_for("index")))
+# 
+# def create_task(text_body, from_number):
+#     patient = Patient.query.filter_by(phone_number=from_number).first()
+#     provider = Provider.query.get(3)
+#     task = Task(description=text_body, patient_id=patient.id, provider_id=provider.id)
 
 if __name__ == "__main__":
     app.run(debug=True)

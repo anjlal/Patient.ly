@@ -21,6 +21,7 @@ Base.query = session.query_property()
 class Provider(Base, UserMixin):
     __tablename__ = "providers" 
     id = Column(Integer, primary_key=True)
+    name = Column(String(70), nullable=False)
     phone_number = Column(String(16), nullable=False)
     email = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
@@ -42,6 +43,7 @@ class Provider(Base, UserMixin):
         """Return object data in easily serializeable format"""
         return {
            'id': self.id,
+           'name': self.name,
            'email': self.email,
            'phoneNumber': self.phone_number
        }
