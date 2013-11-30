@@ -11,6 +11,10 @@ import twilio.twiml
 from twilio.rest import TwilioRestClient
 import logging
 from logging.handlers import RotatingFileHandler
+from werkzeug import secure_filename
+
+UPLOAD_FOLDER = 'static/patient_photos'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # Pull in configuration from system environment variables
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
@@ -23,6 +27,7 @@ client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 app = Flask(__name__)
 app.config.from_object(config)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Stuff to make login easier
 login_manager = LoginManager()
@@ -271,21 +276,40 @@ def view_patients():
 def create_patient():
     name = request.form['name']
     birth_year = request.form['birthYear']
-    photo = request.form['photo']
     phone_number = request.form['phoneNumber']
     provider_id = int(request.form['providerId'])
     
-    provider = Provider.query.get(provider_id)
-    provider_name = provider.name
     
-    patient = Patient(name=name, birth_year=birth_year, photo_filename=photo, phone_number=phone_number)
+    patient = Patient(name=name, birth_year=birth_year, phone_number=phone_number)
     model.session.add(patient)
     model.session.commit()
     
-    send_message_helper(name, provider_name, phone_number)
+    photo = request.files['photo']
+    if photo:
+        # and allowed_file(photo.fileName):
+        # filename = secure_filename(file.filename)
+        filename = "patient_%d_image.jpg" % patient.id
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        patient.photo_filename = filename
+        model.session.commit()
     
+    provider = Provider.query.get(provider_id)
+    # send_message_helper(patient.name, provider.name, patient.phone_number, message)
+    intro = "Hello %s, this is Dr. %s. " % (patient.name, provider.name)
+    message = "Feel free to send me a message here with your requests/concerns."
+    body_text = intro + message
+
+    # Send a text message to the number provided
+    sms_message = client.sms.messages.create(to=patient.phone_number,
+                                         from_=TWILIO_NUMBER,
+                                         body=body_text)    
     return jsonify(patient=patient.serialize_patient)    
-    
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 @app.route("/providers")
 def view_providers():
     providers = Provider.query.all()
