@@ -9,6 +9,8 @@ import json
 import os
 import twilio.twiml
 from twilio.rest import TwilioRestClient
+import logging
+from logging.handlers import RotatingFileHandler
 
 # Pull in configuration from system environment variables
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
@@ -181,7 +183,7 @@ def index():
     
     text_body = request.values.get('Body')
     from_number = request.values.get('From')
-
+    
     # return jsonify(json_list=[i.serialize for i in qryresult.all()])
     # serialized_tasks = serialize_tasks(provider.id)
 
@@ -239,10 +241,20 @@ def messaging_patient(id):
     patient = Patient.query.get(id)
     provider = Provider.query.get(provider_id)
     
-    send_message(patient.name, provider.name, patient.phone_number, message)
-    
-    return jsonify({'result': 'success'})
-    
+    # send_message_helper(patient.name, provider.name, patient.phone_number, message)
+    intro = "Hello %s, this is Dr. %s. " % (patient.name, provider.name)
+    if (message):
+        body_text = intro + message
+        # return redirect(url_for("send_message", message=body_text, phone_number=patient.phone_number))
+        # Send a text message to the number provided
+        sms_message = client.sms.messages.create(to=patient.phone_number,
+                                             from_=TWILIO_NUMBER,
+                                             body=body_text)
+
+        # Return a message indicating the text message is enroute
+        # return 'Message on the way!'
+        return jsonify({'result': 'success'})
+     
 @app.route("/patients/<int:id>/tasks", methods=["GET"])
 def view_task(id):
     patient_tasks = Task.query.filter_by(patient_id=id).all()
@@ -307,22 +319,22 @@ def current_provider():
         return jsonify(error="Error: could not find user with given credentials"), 404
 
 # Handle a POST request to send a text message.
-@app.route('/message/<message>/<phone_number>', methods=['POST'])
-def send_message(message, phone_number):
-    # Send a text message to the number provided
-    message = client.sms.messages.create(to=phone_number,
-                                         from_=TWILIO_NUMBER,
-                                         body=body_text)
-
-    # Return a message indicating the text message is enroute
-    return 'Message on the way!' 
-def send_message_helper(name, provider_name, phone_number, message=None):
-    intro = "Hello %s, this is %s. " % (name, provider_name)
-    if (message):
-        body_text = intro + message
-        return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
-    body_text = intro + "Feel free to send me a message here with your requests/concerns."
-    return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
+# @app.route('/message/<message>/<phone_number>', methods=['POST'])
+# def send_message(message, phone_number):
+#     # Send a text message to the number provided
+#     message = client.sms.messages.create(to=phone_number,
+#                                          from_=TWILIO_NUMBER,
+#                                          body=body_text)
+# 
+#     # Return a message indicating the text message is enroute
+#     return 'Message on the way!' 
+# def send_message_helper(name, provider_name, phone_number, message=None):
+#     intro = "Hello %s, this is %s. " % (name, provider_name)
+#     if (message):
+#         body_text = intro + message
+#         return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
+#     body_text = intro + "Feel free to send me a message here with your requests/concerns."
+#     return redirect(url_for("send_message", message=body_text, phone_number=phone_number))
      
     
 # @app.route("/post/<int:id>")
@@ -380,4 +392,8 @@ def send_message_helper(name, provider_name, phone_number, message=None):
 #     task = Task(description=text_body, patient_id=patient.id, provider_id=provider.id)
 
 if __name__ == "__main__":
+    # handler = RotatingFileHandler('foo.log', maxBytes=10000, backupCount=1)
+    # handler.setLevel(logging.INFO)
+    # app.logger.addHandler(handler)
+    # app.run()
     app.run(debug=True)
