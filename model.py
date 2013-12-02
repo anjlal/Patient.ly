@@ -51,6 +51,7 @@ class Provider(Base, UserMixin):
 class Patient(Base):
     __tablename__ = "patients" 
     id = Column(Integer, primary_key=True)
+    sex = Column(String(1), nullable=False)
     name = Column(String(70), nullable=False)
     birth_year = Column(Integer, nullable=False)
     phone_number = Column(String(16), nullable=False)
@@ -63,6 +64,7 @@ class Patient(Base):
         """Return object data in easily serializeable format"""
         return {
            'id': self.id,
+           'sex': self.sex,
            'name': self.name,
            'birthYear': self.birth_year,
            'phoneNumber': self.phone_number,
@@ -92,7 +94,7 @@ class Task(Base):
        return {
            'id': self.id,
            'description': self.description,
-           'patient': {'id': patient.id, 'name': patient.name, 'birthYear' : patient.birth_year,'phoneNumber': patient.phone_number,'photoFilename': patient.photo_filename},
+           'patient': {'id': patient.id, 'name': patient.name, 'sex': patient.sex, 'birthYear' : patient.birth_year,'phoneNumber': patient.phone_number,'photoFilename': patient.photo_filename},
            'providerId': self.provider_id,
            'createdAt': dump_datetime(self.created_at),
            'updatedAt': dump_datetime(self.updated_at),

@@ -283,12 +283,13 @@ def view_patients():
 @app.route("/patients/create", methods=["POST"])
 def create_patient():
     name = request.form['name']
+    sex = request.form['sex']
     birth_year = int(request.form['birthYear'])
     phone_number = request.form['phoneNumber']
     provider_id = int(request.form['providerId'])
     
     
-    patient = Patient(name=name, birth_year=birth_year, phone_number=phone_number)
+    patient = Patient(name=name, birth_year=birth_year, phone_number=phone_number, sex=sex)
     model.session.add(patient)
     model.session.commit()
     
