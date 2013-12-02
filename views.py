@@ -219,6 +219,14 @@ def change_status(id):
         updated_task.status = request.form['status']
         model.session.commit()
         return jsonify(task=updated_task.serialize_task)    
+
+@app.route("/tasks/<int:id>/description", methods=["POST"])
+def change_description(id):
+    updated_task = Task.query.filter_by(id=id).first()
+    updated_task.description = request.form['description']
+    model.session.commit()
+    return jsonify(task=updated_task.serialize_task)
+    
 @app.route("/tasks")
 def view_tasks():
     provider = Provider.query.get(request.values.get('provider_id'))
